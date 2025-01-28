@@ -1,0 +1,59 @@
+1. Load and Preprocess the Image  
+Start by loading the image of the wall and converting it to grayscale.  
+% Load the image  
+imagePath = 'path_to_your_image.jpg'; % Replace with your image path img 
+= imread(imagePath);  
+% Convert the image to grayscale  
+grayImg = rgb2gray(img);  
+% Display the grayscale image  
+imshow(grayImg);  
+title('Grayscale Image');  
+2. Enhance the Image  
+To make cracks more visible, you might need to enhance the image by adjusting contrast or 
+applying filters.  
+% Adjust contrast using histogram equalization enhancedImg 
+= histeq(grayImg);  
+% Alternatively, apply a Gaussian filter to reduce noise smoothedImg 
+= imgaussfilt(enhancedImg, 2);  
+% Display the enhanced image imshow(smoothedImg);  
+title('Enhanced Image');  
+3. Edge Detection  
+Use an edge detection algorithm to find the cracks in the image.  
+% Apply edge detection (e.g., Canny method)  
+edges = edge(smoothedImg, 'Canny');  
+% Display the edges imshow(edges);  
+title('Detected Edges');  
+4. Post-Processing You might want to perform post-processing to clean up the detected edges.  
+23  
+Wall Crack Detection Using MATLAB  
+% Remove small objects  
+cleanedEdges = bwareaopen(edges, 50); % Adjust the size threshold as needed  
+% Display the cleaned edges imshow(cleanedEdges);  
+title('Cleaned Edges');  
+5. Overlay Detection Results  
+You can overlay the detected cracks on the original image for better visualization.  
+% Convert edge image to RGB edgesRGB = cat(3, 
+cleanedEdges, cleanedEdges, cleanedEdges);  
+% Overlay the edges on the original image  
+overlay = imadd(img, edgesRGB * 255);  
+% Display the overlay imshow(overlay);  
+title('Crack Detection Overlay');  
+Complete Code  
+Here is the complete MATLAB code:  
+% Load and preprocess the image  
+imagePath = 'path_to_your_image.jpg'; % Replace with your image path 
+img = imread(imagePath); grayImg = rgb2gray(img);  
+% Enhance the image enhancedImg 
+= histeq(grayImg);  
+smoothedImg = imgaussfilt(enhancedImg, 2);  
+% Edge detection  
+edges = edge(smoothedImg, 'Canny');  
+% Post-processing cleanedEdges = 
+bwareaopen(edges, 50);  
+% Overlay detection results  
+edgesRGB = cat(3, cleanedEdges, cleanedEdges, cleanedEdges); overlay 
+= imadd(img, edgesRGB * 255);  
+% Display results  
+figure; subplot(2,2,1); imshow(grayImg); title('Grayscale 
+Image'); subplot(2,2,2); imshow(enhancedImg); title('Enhanced 
+Image'); subplot(2,2,3); imshow(cleanedEdges); title('CleanedEdges'); subplot(2,2,4); imshow(overlay); title('Crack Detection Overlay');
